@@ -1,0 +1,51 @@
+# Created by: Geraint Anderson
+# Created on: 27th October 2015
+#
+# This tool is used to facilitate sending emails with Python
+from email.mime.application import MIMEApplication
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from os.path import basename
+from smtplib import SMTP
+
+def send_mail(mailing_list, body, subject, attachments=[], from_email=""):
+    """Used to easily send email
+    body: Text
+    subject: Text
+    from_email: Senders email address as text
+    mailing_list: Recipients email address as array
+    attachment: an array of filenames as attachments"""
+
+    # TO DO - Convert a single file to an array of 1 so it still processes file (check the type)
+
+    # TO DO - Email can be obtained like this (use a python function)
+    #grep "anderg10"  /etc/passwd | awk -F\: '{print $5}' | awk -F"," '{print $2}'
+    # OR BETTER (becaus ethe above is the wrong email), use echo "$USER" and join it onto the email ending.
+    from_email = "anderg10@wycvlapph001.uk.centricaplc.com" # TEST ONLY
+
+    # Set up the message basics
+    msg = MIMEMultipart()
+    msg['From'] = from_email
+    msg['To'] = ', '.join(mailing_list)
+    msg['Subject'] = subject
+
+    print msg
+    # Set the message body
+    msg.attach(MIMEText(body))
+
+    # Process attachments
+    for filename in attachments:
+        with open(filename, "rb") as f:
+            msg.attach(MIMEApplication(
+                f.read(),
+                Content_Disposition='attachment; filename="%s"' % basename(filename),
+                Name=basename(filename)
+            ))
+
+    # Configure and send the mail
+    s = SMTP('localhost')
+    #s.sendmail(from_email, mailing_list.split(', '),  msg.as_string())
+    s.sendmail(from_email, mailing_list,  msg.as_string())
+    s.close()
+
+    #print "Mail sent to %s" % mailing_list
