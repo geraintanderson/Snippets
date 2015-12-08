@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+  <title>Notes Example</title>
+</head>
+<body>
+  <div class="container" ng-app="notesApp" ng-controller="NotesController">
+    <h1>Notes Example</h1>
+    <div id="stage" class="well">
+      <h2>My Notes</h2>
+      <!--textarea class="form-control" ng-model="notes[activeNoteNum].text"></textarea><br-->
+      <textarea class="form-control" ng-model="activeNote.text"></textarea><br>
+      <button type="button" class="btn btn-default" ng-click="onSave()">Save</button>
+      <button type="button" class="btn btn-default" ng-click="onClear()">Clear</button>
+    </div>
+    <div ng-repeat="note in notes">
+      <span ng-bind="note.id" ng-click="setNote(note.id)"></span> <span ng-bind="note.text">
+    </div>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
